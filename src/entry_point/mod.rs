@@ -98,15 +98,21 @@ unsafe extern "C" fn rust_start(app_start: usize, stacktop: usize, app_heap_brea
 
     let data_flash_start_addr = app_start + layout_header.data_sym_start;
 
+
+    let data_start = layout_header.data_start + stacktop;
+
+    syscalls::raw::command(0x8, 2, data_flash_start_addr, 0);
     ptr::copy_nonoverlapping(
         data_flash_start_addr as *const u8,
-        stacktop as *mut u8,
+        data_start as *mut u8,
         layout_header.data_size,
     );
+    syscalls::raw::command(0x8, 2, data_flash_start_addr, 0);
 
     // Zero .bss (specified by the linker script).
-    let bss_end = layout_header.bss_start + layout_header.bss_size; // 1 past the end of .bss
-    for i in layout_header.bss_start..bss_end {
+    let bss_start = layout_header.bss_start + stacktop;
+    let bss_end = bss_start + layout_header.bss_size; // 1 past the end of .bss
+    for i in bss_start..bss_end {
         core::ptr::write(i as *mut u8, 0);
     }
 
