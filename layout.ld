@@ -99,13 +99,13 @@ SECTIONS {
      *  Note: This is placed in Flash after the text section, but needs to be
      *  moved to SRAM at runtime
      */
-    .data : AT (_etext)
+    .data :
     {
         . = ALIGN(4); /* Make sure we're word-aligned here */
         _data = .;
         KEEP(*(.data*))
         . = ALIGN(4); /* Make sure we're word-aligned at the end of flash */
-    } > SRAM
+    } > SRAM AT > FLASH
 
     /* Global Offset Table */
     .got :
@@ -115,7 +115,7 @@ SECTIONS {
         *(.got*)
         *(.got.plt*)
         . = ALIGN(4);
-    } > SRAM
+    } > SRAM AT > FLASH
 
     /* BSS section, static uninitialized variables */
     .bss :
