@@ -44,9 +44,6 @@ fn try_generate_main_wrapped(
         fn main() #output {
             static mut MAIN_INVOKED: bool = false;
             unsafe {
-                if MAIN_INVOKED {
-                    panic!("Main called recursively; this is unsafe with #[libtock::main]");
-                }
                 MAIN_INVOKED = true;
             }
             let _block = async #block;
