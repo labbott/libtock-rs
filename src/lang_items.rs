@@ -29,11 +29,12 @@ use core::executor;
 use core::panic::PanicInfo;
 
 #[lang = "start"]
-extern "C" fn start<T>(main: fn() -> T, _argc: isize, _argv: *const *const u8)
+extern "C" fn start<T>(main: fn() -> T, _argc: isize, _argv: *const *const u8) -> bool
 where
     T: Termination,
 {
     main();
+    true
 }
 
 #[lang = "termination"]
