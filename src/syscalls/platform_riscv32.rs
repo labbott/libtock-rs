@@ -1,4 +1,4 @@
-#[inline(always)]
+#[inline(never)]
 // Justification: documentation is generated from mocks
 #[allow(clippy::missing_safety_doc)]
 pub unsafe fn yieldk() {
