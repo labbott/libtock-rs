@@ -104,6 +104,7 @@ unsafe extern "C" fn rust_start(app_start: usize, stacktop: usize, app_heap_brea
         layout_header.data_size,
     );
 
+
     // Zero .bss (specified by the linker script).
     let bss_end = layout_header.bss_start + layout_header.bss_size; // 1 past the end of .bss
     for i in layout_header.bss_start..bss_end {
@@ -123,11 +124,13 @@ unsafe extern "C" fn rust_start(app_start: usize, stacktop: usize, app_heap_brea
     // Heap size is set using `elf2tab` with `--app-heap` option, which is
     // currently at 1024. If you change the `elf2tab` heap size, make sure to
     // make the corresponding change here.
-    const HEAP_SIZE: usize = 1024;
+    const HEAP_SIZE: usize = 2000;
 
     // we could have also bss_end for app_heap_start
     let app_heap_start = app_heap_break;
     let app_heap_end = app_heap_break + HEAP_SIZE;
+
+    let _ = syscalls::command(0x8, 3, app_heap_break as usize,  app_heap_end as usize);
 
     // Tell the kernel the new app heap break.
     memop::set_brk(app_heap_end as *const u8);

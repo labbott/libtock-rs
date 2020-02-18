@@ -37,6 +37,7 @@ pub struct Drivers {
 }
 
 /// Retrieve [Drivers] struct. Returns struct only once.
+#[inline(never)]
 pub fn retrieve_drivers() -> TockResult<Drivers> {
     match unsafe { DRIVERS_SINGLETON.take() } {
         Some(drivers) => Ok(drivers),

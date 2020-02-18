@@ -25,6 +25,8 @@ mod allow_nr {
 pub struct ConsoleDriver;
 
 impl ConsoleDriver {
+
+    #[inline(never)]
     pub fn create_console(self) -> Console {
         Console {
             allow_buffer: [0; 64],
@@ -37,6 +39,7 @@ pub struct Console {
 }
 
 impl Console {
+    #[inline(never)]
     pub fn write<S: AsRef<[u8]>>(&mut self, text: S) -> TockResult<()> {
         let mut not_written_yet = text.as_ref();
         while !not_written_yet.is_empty() {
@@ -49,6 +52,7 @@ impl Console {
         Ok(())
     }
 
+    #[inline(never)]
     fn flush(&mut self, num_bytes_to_print: usize) -> TockResult<()> {
         let shared_memory = syscalls::allow(
             DRIVER_NUMBER,
@@ -76,6 +80,7 @@ impl Console {
 }
 
 impl fmt::Write for Console {
+    #[inline(never)]
     fn write_str(&mut self, string: &str) -> Result<(), fmt::Error> {
         self.write(string).map_err(|_| fmt::Error)
     }

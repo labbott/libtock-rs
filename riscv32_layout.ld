@@ -2,15 +2,20 @@
 
 MEMORY {
   /* The TBF header region is 32 bytes (0x20) */
-  FLASH (rx) : ORIGIN = 0x20430020, LENGTH = 32M
-  SRAM (rwx) : ORIGIN = 0x80003000, LENGTH = 512K
+
+  FLASH (rx) : ORIGIN = __FLASH_START__, LENGTH = 32M
+  SRAM (rwx) : ORIGIN = __SRAM_START__, LENGTH = 512K
+/*
+  FLASH (rx) : ORIGIN = 0x2043002c, LENGTH = 32M
+  SRAM (rwx) : ORIGIN = 0x80002000, LENGTH = 512K
+*/
 }
 
 /*
  * Any change to STACK_SIZE should be accompanied by a corresponding change to
  * `elf2tab`'s `--stack` option
  */
-STACK_SIZE = 5120;
+STACK_SIZE = 1024;
 
 MPU_MIN_ALIGN = 1K;
 

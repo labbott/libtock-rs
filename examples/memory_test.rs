@@ -82,37 +82,37 @@ async fn main() -> TockResult<()> {
     writeln!(console, "  Finished brk inc write")?;
 
 /************* READ TESTS - FAILING ****************/
-    // writeln!(console, "")?;
-    // writeln!(console, "Starting memory read test: Reading from invalid address {:x} to {:x}", address_end, address_end + 0x100)?;
+     //writeln!(console, "")?;
+     //writeln!(console, "Starting memory read test: Reading from invalid address {:x} to {:x}", address_end, address_end + 0x100)?;
 
-    // for addr in address_end..(address_end + 0x100) {
-    //     let ptr = addr as *mut u32;
+     //for addr in address_end..(address_end + 0x100) {
+     //    let ptr = addr as *mut u32;
 
-    //     writeln!(console, "    reading from: 0x{:x}", addr)?;
+     //    writeln!(console, "    reading from: 0x{:x}", addr)?;
 
-    //     unsafe {
-    //         core::ptr::read_volatile(ptr);
-    //     }
+     //    unsafe {
+     //        core::ptr::read_volatile(ptr);
+     //    }
     // }
 
-    // writeln!(console, "  Finished memory read")?;
+     //writeln!(console, "  Finished memory read")?;
 
 /************* READ TEST FLASH - FAILING ****************/
-    // let flash_end = get_flash_end() as usize;
+    let flash_end = get_flash_end() as usize;
 
-    // writeln!(console, "Starting flash read test: Reading from invalid address {:x} to {:x}", flash_end, flash_end + 0x100)?;
+    writeln!(console, "Starting flash read test: Reading from invalid address {:x} to {:x}", flash_end, flash_end + 0x100)?;
 
-    // for addr in flash_end..flash_end + 0x100 {
-    //     let ptr = addr as *mut u32;
+     for addr in flash_end..flash_end + 0x100 {
+         let ptr = addr as *mut u32;
 
-    //     writeln!(console, "    reading from: 0x{:x}", addr)?;
+         writeln!(console, "    reading from: 0x{:x}", addr)?;
 
-    //     unsafe {
-    //         core::ptr::read_volatile(ptr);
-    //     }
-    // }
+         unsafe {
+             core::ptr::read_volatile(ptr);
+         }
+     }
 
-    // writeln!(console, "  Finished flash read")?;
+     writeln!(console, "  Finished flash read")?;
 
 
     writeln!(console, "Done!")?;

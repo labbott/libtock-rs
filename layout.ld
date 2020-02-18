@@ -86,7 +86,7 @@ SECTIONS {
     } > FLASH =0xFF
 
     /* Application stack */
-    .stack :
+    .stack (NOLOAD) :
     {
         . = . + STACK_SIZE;
 
@@ -122,7 +122,7 @@ SECTIONS {
     {
         . = ALIGN(4); /* Make sure we're word-aligned here */
         _bss = .;
-        KEEP(*(.bss*))
+        KEEP(*(.bss* .sbss*))
         *(COMMON)
         . = ALIGN(4);
     } > SRAM

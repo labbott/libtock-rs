@@ -50,7 +50,8 @@ pub unsafe extern "C" fn _start() -> ! {
     // Otherwise after the first syscall (the memop to set the brk), the return
     // will use a stack that is outside of the process accessible memory.
     //
-    add t2, t0, t1          // t2 = stacktop + appdata_size
+    //add t2, t0, t1          // t2 = stacktop + appdata_size
+    mv t2, t1          // t2 = stacktop + appdata_size
     bgt t2, a3, skip_set_sp // Compare `app_heap_break` with new brk.
                                 // If our current `app_heap_break` is larger
                                 // then we need to move the stack pointer

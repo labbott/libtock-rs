@@ -4,35 +4,14 @@
 
 set -eux
 
-cargo build --release --target=thumbv7em-none-eabi --example "$1"
+cargo build --release --target=riscv32imac-unknown-none-elf --example "$1"
 
 
-elf_file_name="target/tab/$1/cortex-m4.elf"
+elf_file_name="target/tab/$1/rv32imac.elf"
 tab_file_name="target/tab/$1.tab"
 
-# Default value for nRF52-DK
-tockloader_flags="--jlink --arch cortex-m4 --board nrf52dk --jtag-device nrf52"
-
-hail_defined=${hail:-}
-if [ -n "$hail_defined" ]
-then
-    tockloader_flags=""
-fi
-
 mkdir -p "target/tab/$1"
-cp "target/thumbv7em-none-eabi/release/examples/$1" "$elf_file_name"
+cp "target/riscv32imac-unknown-none-elf/release/examples/$1" "$elf_file_name"
 
-elf2tab -n "$1" -o "$tab_file_name" "$elf_file_name" --stack 2048 --app-heap 1024 --kernel-heap 1024 --protected-region-size=64
+elf2tab -n "$1" -o "$tab_file_name" "$elf_file_name" --stack 2048 --app-heap 512 --kernel-heap 1024
 
-if [ "$#" -ge "2" ]
-then
-    if [ "$2" = "--dont-clear-apps" ]
-    then
-        echo "do not delete apps from board."
-    else
-        tockloader uninstall $tockloader_flags || true
-    fi
-else
-    tockloader uninstall $tockloader_flags || true
-fi
-tockloader install $tockloader_flags "$tab_file_name"
